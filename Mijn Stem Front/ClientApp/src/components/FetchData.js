@@ -21,7 +21,7 @@ export class FetchData extends Component {
             <th>Temp. (C)</th>
             <th>Temp. (F)</th>
             <th>Summary</th>
-          </tr>
+          </tr> 
         </thead>
         <tbody>
           {forecasts.map(forecast =>
