@@ -1,19 +1,28 @@
 import React, { Component } from 'react';
-import { Container } from 'reactstrap';
+import { Container, Col, Row } from 'reactstrap';
 import { NavMenu } from './NavMenu';
-import { NavSidebar } from './SideBar'
+import OpenNav from './openNav';
 
 export class Layout extends Component {
-  static displayName = Layout.name;
+    static displayName = Layout.name;
 
-  render () {
-    return (
-      <div>
-            <NavMenu />
-        <Container>
-          {this.props.children}
-        </Container>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div>
+                <NavMenu />
+                <Container fluid className='w-full'>
+                    <Row>
+                        <Col xs="auto" className='p-0'>
+                            <OpenNav />
+                        </Col>
+                        <Col xs="auto" className='p-0'>
+                            <Container>
+                                {this.props.children}
+                            </Container>
+                        </Col>
+                    </Row>
+                </Container>
+            </div>
+        );
+    }
 }

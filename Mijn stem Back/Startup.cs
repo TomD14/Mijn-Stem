@@ -6,7 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Mijn_stem_Back.Models;
+using Mijn_stem_Back.Services;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
@@ -27,6 +30,11 @@ namespace Mijn_stem_Back
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<MijnStemDatabaseSettings>(
+            Configuration.GetSection(nameof(MijnStemDatabaseSettings)));
+
+            services.AddSingleton<IMijnStemDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<MijnStemDatabaseSettings>>().Value);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -34,7 +42,7 @@ namespace Mijn_stem_Back
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mijn_stem_Back", Version = "v1" });
             });
 
-            services.AddTransient<MySqlConnection>(_ => new MySqlConnection(Configuration["ConnectionStrings:Default"]));
+            services.AddSingleton<StellingServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
