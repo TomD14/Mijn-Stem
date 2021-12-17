@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  mijnstemfront:
+    image: ${DOCKER_REGISTRY-}mijnstemfront
+    build:
+      context: .
+      dockerfile: Mijn Stem Front/Dockerfile
+    ports:
+       - '3005:80'
+    command: npm start

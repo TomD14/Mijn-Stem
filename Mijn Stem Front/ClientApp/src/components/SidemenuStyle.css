@@ -12,9 +12,9 @@ body {
     padding: 0;
     width: 200px;
     background-color: #f1f1f1;
-    position: relative;
+    position: absolute;
     z-index: 0;
-    height: 500px;
+    height: 100%;
     overflow: auto;
     transition: background-color 0.2s ease-in;
 }

@@ -33,9 +33,6 @@ namespace Mijn_stem_Back
             services.Configure<MijnStemDatabaseSettings>(
             Configuration.GetSection(nameof(MijnStemDatabaseSettings)));
 
-            services.AddSingleton<IMijnStemDatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<MijnStemDatabaseSettings>>().Value);
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
