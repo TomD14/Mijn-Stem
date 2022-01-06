@@ -1,11 +1,22 @@
 version: '3.4'
 
 services:
-  mijnstemfront:
-    image: ${DOCKER_REGISTRY-}mijnstemfront
+  mijnstemback:
     build:
-      context: .
-      dockerfile: Mijn Stem Front/Dockerfile
+      context: ./Mijn Stem Back
+      dockerfile: ./Dockerfile
     ports:
-       - '3005:80'
+       - '4000:4000'
+    command: npm start
+
+  mijnstemfront:
+    container_name: mijnstemfront
+    build:
+      context: ./mijnstemfront
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
     command: npm start
