@@ -18,7 +18,7 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet ./Mijn Stem.sln
+      run: dotnet restore
     - name: Build
       run: dotnet build Mijn stem Back/MijnStemBack.csproj --configuration Release
     - name: Test
