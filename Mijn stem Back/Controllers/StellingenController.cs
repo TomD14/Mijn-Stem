@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Mijn_stem_Back.Data.Services;
 using Mijn_stem_Back.Models;
-using Mijn_stem_Back.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

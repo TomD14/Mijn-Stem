@@ -8,8 +8,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Mijn_stem_Back.Data.Services;
 using Mijn_stem_Back.Models;
-using Mijn_stem_Back.Services;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,16 @@ namespace Mijn_stem_Back
         {
             services.Configure<MijnStemDatabaseSettings>(
             Configuration.GetSection(nameof(MijnStemDatabaseSettings)));
-
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3030", "http://localhost:3000", "http://localhost:3001")
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod();
+                    });
+            });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -40,6 +49,7 @@ namespace Mijn_stem_Back
             });
 
             services.AddSingleton<StellingServices>();
+            services.AddSingleton<AntwoordServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +65,8 @@ namespace Mijn_stem_Back
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

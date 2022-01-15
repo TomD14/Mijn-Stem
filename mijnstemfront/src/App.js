@@ -1,25 +1,25 @@
 import React from "react";
-import TopNavbar from "./components/TopNavbar";
-import HomePage from "./pages/Home"
-import StellingenPage from "./pages/Stellingen"
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
+import Navbar from "./components/Navbar";
+import Home from "./components/Home";
+import Account from "./components/Account";
 
 function App() {
-  return (
-      <>
-          <BrowserRouter>
-              <React.Fragment>
-              <TopNavbar />
-              <main>
-                  <Routes>
-                      <Route path="/Home" exact={true} component={HomePage}/>
-                      <Route path="/Stelling" component={StellingenPage}/>
-                  </Routes>
-              </main>
-              </React.Fragment>
-          </BrowserRouter>
-      </>
-  );
+    return (
+        //Navbar
+        <Router>
+            <Navbar />
+            <Routes>
+
+                <Route exact path="/" element={<Home/>}>
+                </Route>
+
+                <Route exact path="/Account" element={<Account/>}>
+                </Route>
+
+            </Routes>
+        </Router>
+    )
 }
 
 export default App;

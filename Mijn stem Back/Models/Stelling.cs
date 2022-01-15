@@ -16,17 +16,11 @@ namespace Mijn_stem_Back.Models
         [BsonElement("Name")]
         public string Title { get; set; }
 
-        public string Bescrhijving { get; set; }
+        public string Beschrijving { get; set; }
 
-        public int Keuze1 { get; set; }
+        public string Type { get; set; }
 
-        public int Keuze2 { get; set; }
-
-        public int Keuze3 { get; set; }
-
-        public int Keuze4 { get; set; }
-
-        public int Keuze5 { get; set; }
+        public List<StellingAntwoord> Antwoorden { get; set; }
 
     }
 }
