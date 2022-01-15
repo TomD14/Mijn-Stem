@@ -20,6 +20,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build Mijn-Stem/Mijn stem Back/MijnStemBack.csproj --configuration Release
+      run: dotnet build Mijn-stem-Back/MijnStemBack.csproj --configuration Release
     - name: Test
       run: dotnet test ./Mijn Stem.sln --verbosity normal --configuration Release
