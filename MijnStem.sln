@@ -7,7 +7,7 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MijnStemBack", "MijnstemBack\MijnStemBack.csproj", "{B21D6276-32DE-4ED2-A6CE-1E7C2C2BE6AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MijnStemTests", "TestProject1\MijnStemTests.csproj", "{0134279F-1775-4997-8397-7F051C860C99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MijnStem.Tests", "TestProject1\MijnStem.Tests.csproj", "{0134279F-1775-4997-8397-7F051C860C99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

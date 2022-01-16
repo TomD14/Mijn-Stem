@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Mijn_stem_Back.Data.Services.Interfaces;
 using Mijn_stem_Back.Models;
 using MongoDB.Driver;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 
 namespace Mijn_stem_Back.Data.Services
 {
-    public class StellingServices
+    public class StellingServices : IStellingServices
     {
         private readonly IMongoCollection<Stelling> _stellingen;
 

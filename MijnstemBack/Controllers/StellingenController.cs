@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Mijn_stem_Back.Data.Services;
+using Mijn_stem_Back.Data.Services.Interfaces;
 using Mijn_stem_Back.Models;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,9 @@ namespace Mijn_stem_Back.Controllers
     [ApiController]
     public class StellingenController : ControllerBase
     {
-        private readonly StellingServices _stellingService;
+        private readonly IStellingServices _stellingService;
 
-        public StellingenController(StellingServices stellingServices)
+        public StellingenController(IStellingServices stellingServices)
         {
             _stellingService = stellingServices;
         }
