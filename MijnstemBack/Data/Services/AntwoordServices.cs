@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Mijn_stem_Back.Data.Services.Interfaces;
 using Mijn_stem_Back.Models;
 using MongoDB.Driver;
 using System;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Mijn_stem_Back.Data.Services
 {
-    public class AntwoordServices
+    public class AntwoordServices : IAntwoordServices
     {
         private readonly IMongoCollection<Stelling> _stellingen;
 
@@ -40,5 +41,7 @@ namespace Mijn_stem_Back.Data.Services
             return null;
         }
 
+        public List<Stelling> GetType(string Type) =>
+        _stellingen.Find<Stelling>(stelling => stelling.Type == Type).ToList();
     }
 }

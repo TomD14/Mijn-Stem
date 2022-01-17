@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Mijn_stem_Back.Data.Services;
+using Mijn_stem_Back.Data.Services.Interfaces;
 using Mijn_stem_Back.Models;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,10 @@ namespace Mijn_stem_Back.Controllers
     [ApiController]
     public class StellingAntwoordController : ControllerBase
     {
-        private readonly StellingServices _stellingService;
-        private readonly AntwoordServices _antwoordServices;
+        private readonly IStellingServices _stellingService;
+        private readonly IAntwoordServices _antwoordServices;
 
-        public StellingAntwoordController(StellingServices stellingServices, AntwoordServices antwoordServices)
+        public StellingAntwoordController(IStellingServices stellingServices, IAntwoordServices antwoordServices)
         {
             _stellingService = stellingServices;
             _antwoordServices = antwoordServices;
@@ -43,7 +44,7 @@ namespace Mijn_stem_Back.Controllers
         [HttpGet("{type}, {userId}", Name = "GetStellingType")]
         public ActionResult<List<Stelling>> Get(string type, string userId)
         {
-            List<Stelling> stellingen = _stellingService.GetType(type).ToList();
+            List<Stelling> stellingen = _antwoordServices.GetType(type).ToList();
 
             if (stellingen == null)
             {

@@ -15,6 +15,5 @@ namespace Mijn_stem_Back.Data.Services.Interfaces
         public void RemoveStelling(Stelling stelling);
         public void Remove(string id);
         public StellingAntwoord CreateAntwoord(string stellingId, StellingAntwoord stellingAntwoord);
-        public List<Stelling> GetType(string Type);
     }
 }

@@ -73,7 +73,7 @@ namespace Mijn_stem_Back.Controllers
 
             _stellingService.Remove(stelling.StellingId);
 
-            return NoContent();
+            return Ok();
         }
     }
 }

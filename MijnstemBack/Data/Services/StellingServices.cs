@@ -2,6 +2,7 @@
 using Mijn_stem_Back.Data.Services.Interfaces;
 using Mijn_stem_Back.Models;
 using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -37,8 +38,18 @@ namespace Mijn_stem_Back.Data.Services
         public void RemoveStelling(Stelling stellingIn) =>
             _stellingen.DeleteOne(stelling => stelling.StellingId == stellingIn.StellingId);
 
-        public void Remove(string id) =>
-            _stellingen.DeleteOne(stelling => stelling.StellingId == id);
+        public void Remove(string id)
+        {
+            try
+            {
+                _stellingen.DeleteOne(stelling => stelling.StellingId == id);
+
+            }
+            catch(Exception e) 
+            {
+                Console.WriteLine(e);
+            }
+        }
 
         public StellingAntwoord CreateAntwoord(string stellingId, StellingAntwoord stellingAntwoord)
         {
@@ -50,7 +61,6 @@ namespace Mijn_stem_Back.Data.Services
             return stellingAntwoord;
         }
 
-        public List<Stelling> GetType(string Type) =>
-            _stellingen.Find<Stelling>(stelling => stelling.Type == Type).ToList();
+
     }
 }

@@ -25,7 +25,8 @@ class StellingCards extends React.Component{
         naam: '',
         beschrijving: '',
         stellingen: [],
-        antwoorden: []
+        antwoorden: [],
+        BarGraphData: []
     };
 
 
@@ -62,6 +63,10 @@ class StellingCards extends React.Component{
         };
         const resultaat = groupBy(antwoorden, "antwoord");
         console.log(resultaat);
+
+        Object.keys(resultaat).map(key =>(
+           this.state.BarGraphData.add(resultaat.title, resultaat.length),
+            console.log(this.state.BarGraphData)))
 
         return(
             <div>
