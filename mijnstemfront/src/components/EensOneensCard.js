@@ -48,7 +48,7 @@ export function EensOneensCard() {
             })
             .catch((e) => {
                 console.log(e);
-                alert('FUCK');
+                alert('Failed to get data');
             });
     };
 
