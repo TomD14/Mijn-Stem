@@ -22,13 +22,13 @@ namespace Mijn_stem_Back.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Stelling>> Get() =>
-            _stellingService.Get();
+        public async Task <ActionResult<List<Stelling>>> Get() =>
+            await _stellingService.Get();
 
         [HttpGet("{id:length(24)}", Name = "GetStelling")]
-        public ActionResult<Stelling> Get(string id)
+        public async Task<ActionResult<Stelling>> Get(string id)
         {
-            var stelling = _stellingService.Get(id);
+            var stelling = await _stellingService.GetById(id);
 
             if (stelling == null)
             {
@@ -49,7 +49,7 @@ namespace Mijn_stem_Back.Controllers
         [HttpPut("{id:length(24)}")]
         public IActionResult Update(string id, Stelling stellingIn)
         {
-            var stelling = _stellingService.Get(id);
+            var stelling = _stellingService.GetById(id);
 
             if (stelling == null)
             {
@@ -62,16 +62,16 @@ namespace Mijn_stem_Back.Controllers
         }
 
         [HttpDelete("{id:length(24)}")]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var stelling = _stellingService.Get(id);
+            var stelling = await _stellingService.GetById(id);
 
             if (stelling == null)
             {
                 return NotFound();
             }
 
-            _stellingService.Remove(stelling.StellingId);
+            await _stellingService.Remove(stelling.StellingId);
 
             return Ok();
         }

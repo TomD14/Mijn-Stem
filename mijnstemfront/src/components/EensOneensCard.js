@@ -66,8 +66,8 @@ export function EensOneensCard() {
                     </Card.Body>
                     <Card.Footer>
                         <RadioGroup className="mb-2" row aria-label="antwoord" name="row-radio-buttons-group">
-                            <FormControlLabel control={<Radio {...controlProps('Oneens')}></Radio>} label="Oneens" labelPlacement="bottom"></FormControlLabel>
-                            <FormControlLabel control={<Radio {...controlProps('Eens')}></Radio>} label="Eens" labelPlacement="bottom"></FormControlLabel>
+                            <FormControlLabel control={<Radio {...controlProps('Oneens')}/>} label="Oneens" labelPlacement="bottom"/>
+                            <FormControlLabel control={<Radio {...controlProps('Eens')}/>} label="Eens" labelPlacement="bottom"/>
                         </RadioGroup>
                         <button onClick={() => handleClick(stelling.stellingId)}>Test</button>
                     </Card.Footer>

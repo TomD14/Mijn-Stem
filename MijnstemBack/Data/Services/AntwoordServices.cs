@@ -21,27 +21,28 @@ namespace Mijn_stem_Back.Data.Services
             _stellingen = database.GetCollection<Stelling>(configuration["CollectionName"]);
         }
 
-        public StellingAntwoord CreateAntwoord(string stellingId, StellingAntwoord stellingAntwoord)
+        public async Task<StellingAntwoord> CreateAntwoord(string stellingId, StellingAntwoord stellingAntwoord)
         {
             var itemFilter = Builders<Stelling>.Filter.Eq(v => v.StellingId, stellingId);
 
             var updateBuilder = Builders<Stelling>.Update.AddToSet(Stelling => Stelling.Antwoorden, stellingAntwoord);
 
-            _stellingen.UpdateOne(itemFilter, updateBuilder, new UpdateOptions() { IsUpsert = true});
+            await _stellingen.UpdateOneAsync(itemFilter, updateBuilder, new UpdateOptions() { IsUpsert = true});
             return stellingAntwoord;
         }
 
-        public StellingAntwoord? CheckUser(string userId, string stellingId)
+        public async Task<StellingAntwoord> CheckUser(string userId, string stellingId)
         {
-            var stelling = _stellingen.Find<Stelling>(stelling => stelling.StellingId == stellingId).FirstOrDefault();
+            var stelling = await _stellingen.Find(stelling => stelling.StellingId == stellingId).FirstAsync();
             if(stelling.Antwoorden != null)
             {
-                return stelling.Antwoorden.Find(antwoord => antwoord.UserId == userId);
+                var result = stelling.Antwoorden.Find(antwoord => antwoord.UserId == userId);
+                return result;
             }
             return null;
         }
 
-        public List<Stelling> GetType(string Type) =>
-        _stellingen.Find<Stelling>(stelling => stelling.Type == Type).ToList();
+        public async Task<List<Stelling>> GetType(string Type) =>
+        await _stellingen.Find(stelling => stelling.Type == Type).ToListAsync();
     }
 }

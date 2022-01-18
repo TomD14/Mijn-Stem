@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Mijn_stem_Back.Data.Services;
+using Mijn_stem_Back.Data.Services.Interfaces;
 using Mijn_stem_Back.Models;
 using MySqlConnector;
 using System;
@@ -42,14 +43,14 @@ namespace Mijn_stem_Back
                                             .AllowAnyMethod();
                     });
             });
+            services.AddScoped<IStellingServices, StellingServices>();
+            services.AddScoped<IAntwoordServices, AntwoordServices>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mijn_stem_Back", Version = "v1" });
             });
 
-            services.AddSingleton<StellingServices>();
-            services.AddSingleton<AntwoordServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

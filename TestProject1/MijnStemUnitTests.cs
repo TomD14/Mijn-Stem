@@ -12,6 +12,7 @@ using Mijn_stem_Back.Data.Services;
 using System.Linq;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace MijnStemUnitTests
 {
@@ -32,20 +33,20 @@ namespace MijnStemUnitTests
         public void GetStringId_TrueIfNameIsTest()
         {
             var stellingService = new Mock<IStellingServices>();
-            stellingService.Setup(repo => repo.Get(It.IsAny<string>())).Returns((string x) => GetTestData().Find(stelling => stelling.StellingId == x));
+            stellingService.Setup(repo => repo.GetById(It.IsAny<string>())).ReturnsAsync((string x) => GetTestData().Find(stelling => stelling.StellingId == x));
 
             var controller = new StellingenController(stellingService.Object);
 
             var result = controller.Get("1");
 
-            Assert.Equal("Test", result.Value.Title);
+            Assert.Equal("Test", result.Result.Value.Title);
         }
 
         [Fact]
         public void GetAll_TrueIfListIsTwo()
         {
             var stellingService = new Mock<IStellingServices>();
-            stellingService.Setup(repo => repo.Get()).Returns(new List<Stelling>
+            stellingService.Setup(repo => repo.Get()).ReturnsAsync(new List<Stelling>
                 { new Stelling() { StellingId = "1", Title = "Test 1" },
                 { new Stelling() { StellingId = "2", Title = "Test 2"} } });
 
@@ -53,49 +54,69 @@ namespace MijnStemUnitTests
 
             var result = controller.Get();
 
-            Assert.Equal(2, result.Value.Count);
+            Assert.Equal(2, result.Result.Value.Count);
         }
 
         [Fact]
-        public void Delete()
+        public async Task Delete()
         {
 
             var stellingService = new Mock<IStellingServices>();
-            stellingService.Setup(repo => repo.Get(It.IsAny<string>())).Returns((string x) => GetTestData().Find(stelling => stelling.StellingId == x));
+            //stellingService.Setup(repo => repo.Get())
+            stellingService.Setup(repo => repo.GetById("2")).ReturnsAsync(new Stelling { StellingId = "2" });
+            stellingService.Setup(repo => repo.Remove("2")).Verifiable();
 
             var controller = new StellingenController(stellingService.Object);
 
 
             var tests = controller.Delete("2");
 
-            Assert.IsType<OkResult>(tests);
+            Assert.IsType<OkResult>(await tests);
         }
 
-        //[Fact]
-        //public void Create()
-        //{
-        //    var stellingservice = new Mock<IStellingServices>();
-        //    stellingservice.Setup(repo => repo.Get(It.IsAny<string>())).Returns((string x) => GetTestData().Find(stelling => stelling.StellingId == x));
+        [Fact]
+        public async Task a_stelling_can_not_be_deleted_when_not_found()
+        {
 
-        //    var controller = new StellingenController(stellingservice.Object);
+            var stellingService = new Mock<IStellingServices>();
+            stellingService.Setup(repo => repo.GetById("2")).ReturnsAsync((Stelling)null);
+            stellingService.Setup(repo => repo.Remove("2")).Verifiable();
 
-        //    var result = controller.Create(new Stelling() { StellingId = "3" });
+            var controller = new StellingenController(stellingService.Object);
 
-        //    Assert.Equal("3", result.Value.StellingId);
-        //}
+
+            var tests = controller.Delete("3");
+
+            Assert.IsType<NotFoundResult>(await tests);
+        }
+
+        [Fact]
+        public void Create()
+        {
+            var stellingservice = new Mock<IStellingServices>();
+            stellingservice.Setup(repo => repo.Create(new Stelling() { StellingId = "1" })).ReturnsAsync(new Stelling { StellingId = "1"});
+
+            var controller = new StellingenController(stellingservice.Object);
+
+            ActionResult<Stelling> result = controller.Create(new Stelling() { StellingId = "1" });
+
+            CreatedAtRouteResult Specific = (CreatedAtRouteResult)result.Result;
+            Stelling stelling = (Stelling)Specific.Value;
+            Assert.Equal("1", stelling.StellingId);
+        }
 
         [Fact]
         public void TestType()
         {
             var stellingService = new Mock<IStellingServices>();
-            stellingService.Setup(repo => repo.Get(It.IsAny<string>())).Returns((string x) => GetTestData().Find(stelling => stelling.StellingId == x));
+            stellingService.Setup(repo => repo.GetById(It.IsAny<string>())).ReturnsAsync((string x) => GetTestData().Find(stelling => stelling.StellingId == x));
 
             var antwoordService = new Mock<IAntwoordServices>();
-            antwoordService.Setup(repo => repo.GetType(It.IsAny<string>())).Returns((string x) => GetTestData().Where(stelling => stelling.Type == x).ToList());
+            antwoordService.Setup(repo => repo.GetType(It.IsAny<string>())).ReturnsAsync((string x) => GetTestData().Where(stelling => stelling.Type == x).ToList());
 
             var controller = new StellingAntwoordController(stellingService.Object, antwoordService.Object);
 
-            var result = controller.Get("EensOn", "2").Value.FirstOrDefault();
+            var result = controller.Get("EensOn", "2").Result.Value.FirstOrDefault();
             var expected = new Stelling() { StellingId = "2", Type = "EensOn", Antwoorden = new List<StellingAntwoord>() { new StellingAntwoord() { UserId = "1" } } };
 
             Assert.Equal(expected.StellingId, result.StellingId);

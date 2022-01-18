@@ -5,6 +5,8 @@ using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Mijn_stem_Back.Data.Services
 {
@@ -20,29 +22,31 @@ namespace Mijn_stem_Back.Data.Services
             _stellingen = database.GetCollection<Stelling>(configuration["CollectionName"]);
         }
 
-        public List<Stelling> Get() =>
-            _stellingen.Find(stelling => true).ToList();
+        public async Task<List<Stelling>> Get() =>
+            await _stellingen.Find(stelling => true).ToListAsync();
 
-        public Stelling Get(string id) =>
-            _stellingen.Find<Stelling>(stelling => stelling.StellingId == id).FirstOrDefault();
+        public async Task<Stelling> GetById(string id) =>
+            await _stellingen.Find(stelling => stelling.StellingId == id).FirstAsync();
 
-        public Stelling Create(Stelling stelling)
+        public async Task<Stelling> Create(Stelling stelling)
         {
-            _stellingen.InsertOne(stelling);
+            await _stellingen.InsertOneAsync(stelling);
             return stelling;
         }
 
-        public void Update(string id, Stelling stellingIn) =>
-            _stellingen.ReplaceOne(stelling => stelling.StellingId == id, stellingIn);
+        public async Task Update(string id, Stelling stellingIn)
+        {
+            await _stellingen.ReplaceOneAsync(stelling => stelling.StellingId == id, stellingIn);
+        }
 
-        public void RemoveStelling(Stelling stellingIn) =>
-            _stellingen.DeleteOne(stelling => stelling.StellingId == stellingIn.StellingId);
+        public async Task RemoveStelling(Stelling stellingIn) =>
+            await _stellingen.DeleteOneAsync(stelling => stelling.StellingId == stellingIn.StellingId);
 
-        public void Remove(string id)
+        public async Task Remove(string id)
         {
             try
             {
-                _stellingen.DeleteOne(stelling => stelling.StellingId == id);
+                await _stellingen.DeleteOneAsync(stelling => stelling.StellingId == id);
 
             }
             catch(Exception e) 
@@ -51,13 +55,13 @@ namespace Mijn_stem_Back.Data.Services
             }
         }
 
-        public StellingAntwoord CreateAntwoord(string stellingId, StellingAntwoord stellingAntwoord)
+        public async Task<StellingAntwoord> CreateAntwoord(string stellingId, StellingAntwoord stellingAntwoord)
         {
             var itemFilter = Builders<Stelling>.Filter.Eq(v => v.StellingId, stellingId);
 
             var updateBuilder = Builders<Stelling>.Update.AddToSet(Stelling => Stelling.Antwoorden, stellingAntwoord);
 
-            _stellingen.UpdateOne(itemFilter, updateBuilder, new UpdateOptions() { IsUpsert = true });
+            await _stellingen.UpdateOneAsync(itemFilter, updateBuilder, new UpdateOptions() { IsUpsert = true });
             return stellingAntwoord;
         }
 

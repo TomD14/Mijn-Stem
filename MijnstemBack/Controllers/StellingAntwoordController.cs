@@ -25,14 +25,14 @@ namespace Mijn_stem_Back.Controllers
         [HttpPut("{id:length(24)}")]
         public IActionResult Update(string id, StellingAntwoord stellingAntwoordIn)
         {
-            var stelling = _stellingService.Get(id);
+            var stelling = _stellingService.GetById(id);
 
             if (stelling == null)
             {
                 return NotFound();
             }
 
-            if (_antwoordServices.CheckUser(stellingAntwoordIn.UserId, id) == null) 
+            if (stelling.Result.Antwoorden.Find(a => a.UserId == stellingAntwoordIn.UserId) == null) 
             {
                 _stellingService.CreateAntwoord(id, stellingAntwoordIn);
 
@@ -42,16 +42,16 @@ namespace Mijn_stem_Back.Controllers
         }
 
         [HttpGet("{type}, {userId}", Name = "GetStellingType")]
-        public ActionResult<List<Stelling>> Get(string type, string userId)
+        public async Task<ActionResult<List<Stelling>>> Get(string type, string userId)
         {
-            List<Stelling> stellingen = _antwoordServices.GetType(type).ToList();
+            List<Stelling> stellingen = await _antwoordServices.GetType(type);
 
             if (stellingen == null)
             {
                 return NotFound();
             }
 
-            List<Stelling> Resultaat = stellingen.Where(stelling => _antwoordServices.CheckUser(userId, stelling.StellingId) == null).ToList();
+            List<Stelling> Resultaat = stellingen.Where(stelling => stelling.Antwoorden.Where(a => a.UserId == userId).ToList().Count == 0).ToList();
 
             return Resultaat;
         }

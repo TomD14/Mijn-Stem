@@ -8,12 +8,12 @@ namespace Mijn_stem_Back.Data.Services.Interfaces
 {
     public interface IStellingServices
     {
-        public List<Stelling> Get();
-        public Stelling Get(string id);
-        public Stelling Create(Stelling stelling);
-        public void Update(string id, Stelling stelling);
-        public void RemoveStelling(Stelling stelling);
-        public void Remove(string id);
-        public StellingAntwoord CreateAntwoord(string stellingId, StellingAntwoord stellingAntwoord);
+        public Task<List<Stelling>> Get();
+        public Task<Stelling> GetById(string id);
+        public Task<Stelling> Create(Stelling stelling);
+        public Task Update(string id, Stelling stelling);
+        public Task RemoveStelling(Stelling stelling);
+        public Task Remove(string id);
+        public Task<StellingAntwoord> CreateAntwoord(string stellingId, StellingAntwoord stellingAntwoord);
     }
 }

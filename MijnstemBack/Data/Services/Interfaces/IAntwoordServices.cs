@@ -8,9 +8,9 @@ namespace Mijn_stem_Back.Data.Services.Interfaces
 {
     public interface IAntwoordServices
     {
-        public StellingAntwoord CreateAntwoord(string stellingId, StellingAntwoord stellingAntwoord);
-        public StellingAntwoord? CheckUser(string userId, string stellingId);
-        public List<Stelling> GetType(string Type);
+        public Task<StellingAntwoord> CreateAntwoord(string stellingId, StellingAntwoord stellingAntwoord);
+        public Task<StellingAntwoord> CheckUser(string userId, string stellingId);
+        public Task<List<Stelling>> GetType(string Type);
 
     }
 }
